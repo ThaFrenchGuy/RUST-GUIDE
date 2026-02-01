@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#070a10" />
+  <title>FuZion • Wipe Hub</title>
+
+  <meta property="og:title" content="FuZion • Wipe Hub" />
+  <meta property="og:description" content="Countdown + full Rust guide (bases, electricity, farming, industrial, monuments)." />
+  <meta property="og:image" content="background.png" />
+
+  <link rel="stylesheet" href="styles.css?v=4" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bgShade" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="topRow">
+      <button class="iconBtn" id="menuBtn" aria-label="Open menu">☰</button>
+      <div class="brand">
+        <div class="brandTitle">FuZion</div>
+        <div class="brandSub">Wipe Hub • Last Friday • 5PM US</div>
+      </div>
+      <a class="btn" id="discordBtn" href="https://discord.gg/aUVKDV8nPk" target="_blank" rel="noreferrer">Join Discord</a>
+    </div>
+
+    <div class="tabRow" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" aria-selected="true" data-tab="countdown">Countdown</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="guide">Guide</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="server">Server</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="rules">Rules</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="links">Links</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="settings">Settings</button>
+    </div>
+  </header>
+
+  <!-- Slide-over menu (mobile convenience) -->
+  <aside class="sheet" id="sheet" aria-hidden="true">
+    <div class="sheetBackdrop" data-close="sheet"></div>
+    <div class="sheetPanel" role="dialog" aria-modal="true" aria-label="Menu">
+      <div class="sheetTop">
+        <div class="sheetTitle">Sections</div>
+        <button class="iconBtn" data-close="sheet" aria-label="Close">✕</button>
+      </div>
+      <div class="sheetBody">
+        <button class="sheetItem" data-goto="countdown">Countdown</button>
+        <button class="sheetItem" data-goto="guide">Guide</button>
+        <button class="sheetItem" data-goto="server">Server</button>
+        <button class="sheetItem" data-goto="rules">Rules</button>
+        <button class="sheetItem" data-goto="links">Links</button>
+        <button class="sheetItem" data-goto="settings">Settings</button>
+
+        <div class="hr"></div>
+
+        <a class="sheetItem link" href="https://discord.gg/aUVKDV8nPk" target="_blank" rel="noreferrer">Join Discord</a>
+        <button class="sheetItem" id="openPalette">Quick Search (⌘/Ctrl + K)</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Command palette -->
+  <div class="palette" id="palette" aria-hidden="true">
+    <div class="paletteBackdrop" data-close="palette"></div>
+    <div class="palettePanel" role="dialog" aria-modal="true" aria-label="Quick search">
+      <div class="paletteTop">
+        <input id="paletteInput" type="search" placeholder="Search everything… (enter to open)" autocomplete="off" />
+        <button class="iconBtn" data-close="palette" aria-label="Close">✕</button>
+      </div>
+      <div class="paletteHint">↑ ↓ navigate • Enter open • Esc close</div>
+      <div class="paletteResults" id="paletteResults" role="listbox" aria-label="Results"></div>
+    </div>
+  </div>
+
+  <main class="main" id="main">
+
+    <!-- COUNTDOWN -->
+    <section class="panel active" id="panel-countdown" role="tabpanel">
+      <div class="hero">
+        <div class="heroTitle">WIPE COUNTDOWN</div>
+        <div class="heroMeta">
+          <div class="pill" id="wipeTarget">Target: —</div>
+          <div class="pill" id="wipeLocal">Your time: —</div>
+        </div>
+
+        <div class="grid2">
+          <div class="stat"><div class="num" id="d">—</div><div class="lbl">DAYS</div></div>
+          <div class="stat"><div class="num" id="h">—</div><div class="lbl">HOURS</div></div>
+          <div class="stat"><div class="num" id="m">—</div><div class="lbl">MIN</div></div>
+          <div class="stat"><div class="num" id="s">—</div><div class="lbl">SEC</div></div>
+        </div>
+
+        <div class="ctaRow">
+          <a class="btn primary" href="https://discord.gg/aUVKDV8nPk" target="_blank" rel="noreferrer">JOIN NOW</a>
+          <button class="btn" id="copyWipe">Copy wipe info</button>
+        </div>
+
+        <div class="smallNote">Get ready • Lock in</div>
+      </div>
+    </section>
+
+    <!-- GUIDE -->
+    <section class="panel" id="panel-guide" role="tabpanel">
+      <div class="panelHead">
+        <h1>Rust mega guide</h1>
+        <p class="muted">Everything in one place: bases, building, electricity (items + systems), farming/teas, industrial automation, monuments, PvP, raiding.</p>
+
+        <div class="guideTools">
+          <input id="guideSearch" class="search" type="search" placeholder="Search guide: bunker, turret, tea, conveyor, dome…" autocomplete="off" />
+          <button class="btn" id="guideOpenPalette">⌘/Ctrl + K</button>
+          <button class="btn" id="toggleSaved">Saved (<span id="savedCount">0</span>)</button>
+        </div>
+      </div>
+
+      <div class="guideNav" role="tablist" aria-label="Guide categories">
+        <button class="chip" aria-selected="true" data-gtab="bases">Bases</button>
+        <button class="chip" aria-selected="false" data-gtab="building">Building</button>
+        <button class="chip" aria-selected="false" data-gtab="electricity">Electricity</button>
+        <button class="chip" aria-selected="false" data-gtab="industrial">Industrial</button>
+        <button class="chip" aria-selected="false" data-gtab="farming">Farming</button>
+        <button class="chip" aria-selected="false" data-gtab="monuments">Monuments</button>
+        <button class="chip" aria-selected="false" data-gtab="pvp">PvP</button>
+        <button class="chip" aria-selected="false" data-gtab="raiding">Raiding</button>
+      </div>
+
+      <div class="guideWrap">
+        <section class="gpanel active" id="g-bases">
+          <div class="cards" id="cards-bases"></div>
+        </section>
+        <section class="gpanel" id="g-building">
+          <div class="cards" id="cards-building"></div>
+        </section>
+        <section class="gpanel" id="g-electricity">
+          <div class="cards" id="cards-electricity"></div>
+        </section>
+        <section class="gpanel" id="g-industrial">
+          <div class="cards" id="cards-industrial"></div>
+        </section>
+        <section class="gpanel" id="g-farming">
+          <div class="cards" id="cards-farming"></div>
+        </section>
+        <section class="gpanel" id="g-monuments">
+          <div class="cards" id="cards-monuments"></div>
+        </section>
+        <section class="gpanel" id="g-pvp">
+          <div class="cards" id="cards-pvp"></div>
+        </section>
+        <section class="gpanel" id="g-raiding">
+          <div class="cards" id="cards-raiding"></div>
+        </section>
+      </div>
+
+      <div class="savedDrawer" id="savedDrawer" aria-hidden="true">
+        <div class="savedTop">
+          <div class="savedTitle">Saved</div>
+          <button class="iconBtn" id="closeSaved" aria-label="Close saved">✕</button>
+        </div>
+        <div class="savedList" id="savedList"></div>
+      </div>
+    </section>
+
+    <!-- SERVER -->
+    <section class="panel" id="panel-server" role="tabpanel">
+      <div class="panelHead">
+        <h1>Server info</h1>
+        <p class="muted">Put your real server details here.</p>
+      </div>
+
+      <article class="card">
+        <h2>Connect</h2>
+        <ul class="ul">
+          <li><b>Server name:</b> FuZion</li>
+          <li><b>Region:</b> US</li>
+          <li><b>Wipe:</b> Last Friday • 5PM US (selected timezone)</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Quality-of-life</h2>
+        <ul class="ul">
+          <li>Fast reporting: include grid + clip when possible.</li>
+          <li>No drama: handle it in tickets/DMs.</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- RULES -->
+    <section class="panel" id="panel-rules" role="tabpanel">
+      <div class="panelHead">
+        <h1>Rules</h1>
+        <p class="muted">Replace with your server rules.</p>
+      </div>
+
+      <article class="card">
+        <h2>Examples</h2>
+        <ol class="ol">
+          <li>No cheating/scripting/third-party tools.</li>
+          <li>No hateful speech.</li>
+          <li>Admins don’t refund loot for normal gameplay.</li>
+          <li>Report issues with proof.</li>
+        </ol>
+      </article>
+    </section>
+
+    <!-- LINKS -->
+    <section class="panel" id="panel-links" role="tabpanel">
+      <div class="panelHead">
+        <h1>Links</h1>
+        <p class="muted">Best tools + creators for learning.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <h2>Electricity</h2>
+          <ul class="ul">
+            <li><a href="https://www.rustrician.io/" target="_blank" rel="noreferrer">Rustrician (circuit sim)</a></li>
+            <li><a href="https://www.youtube.com/results?search_query=rust+electricity+guide" target="_blank" rel="noreferrer">YouTube: electricity guides</a></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Bases</h2>
+          <ul class="ul">
+            <li><a href="https://www.youtube.com/c/EvilWurst" target="_blank" rel="noreferrer">Evil Wurst (base builds)</a></li>
+            <li><a href="https://www.youtube.com/results?search_query=rust+solo+base+build" target="_blank" rel="noreferrer">Solo base builds search</a></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Monuments</h2>
+          <ul class="ul">
+            <li><a href="https://www.youtube.com/results?search_query=rust+monument+puzzle+guide" target="_blank" rel="noreferrer">Monument puzzle guides</a></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Industrial</h2>
+          <ul class="ul">
+            <li><a href="https://rust.facepunch.com/news/industrial-update" target="_blank" rel="noreferrer">Facepunch: Industrial update</a></li>
+            <li><a href="https://www.youtube.com/results?search_query=rust+industrial+automation" target="_blank" rel="noreferrer">Industrial automation guides</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="panel" id="panel-settings" role="tabpanel">
+      <div class="panelHead">
+        <h1>Settings</h1>
+        <p class="muted">Saved on your device.</p>
+      </div>
+
+      <article class="card">
+        <h2>Wipe timezone</h2>
+        <p class="muted">Wipe is <b>last Friday of the month @ 5:00 PM</b> in the timezone you choose here.</p>
+        <div class="row">
+          <select id="wipeTZ" class="select" aria-label="Wipe timezone">
+            <option value="America/Chicago" selected>US Central (Chicago) — default</option>
+            <option value="America/New_York">US Eastern (New York)</option>
+            <option value="America/Denver">US Mountain (Denver)</option>
+            <option value="America/Los_Angeles">US Pacific (Los Angeles)</option>
+          </select>
+          <button class="btn" id="recalcWipe">Recalculate</button>
+        </div>
+        <div class="hint" id="wipeHint"></div>
+      </article>
+
+      <article class="card">
+        <h2>UI</h2>
+        <div class="toggles">
+          <label class="toggle"><input id="tNoAnim" type="checkbox" /><span class="switch"></span><span>Disable animations</span></label>
+          <label class="toggle"><input id="tCompact" type="checkbox" /><span class="switch"></span><span>Compact mode</span></label>
+          <label class="toggle"><input id="tForceEN" type="checkbox" checked /><span class="switch"></span><span>Force English time format</span></label>
+        </div>
+        <div class="smallNote">Tip: on iPhone, GitHub Pages may cache hard. If something looks “half updated”, refresh with a new query like <b>?v=5</b>.</div>
+      </article>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js?v=4"></script>
+</body>
+</html>
