@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#070a10" />
+  <title>FuZion Rust Compendium</title>
+  <meta name="description" content="Insane, user-friendly Rust guides: building, bases, electricity, farming, industrial, monuments, PvP, wipe plan." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="top-left">
+      <button class="icon-btn menu" id="menuBtn" aria-label="Open menu" title="Menu">☰</button>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="title">FuZion Rust Compendium</div>
+          <div class="sub" id="subline">Last Friday • 5PM US (select timezone)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-right">
+      <button class="pill-btn" id="cmdBtn" aria-label="Open search" title="Search (Ctrl/⌘K)">
+        <span class="pill-ic">⌘</span>
+        <span>Search</span>
+        <span class="pill-k">K</span>
+      </button>
+      <button class="icon-btn" id="themeBtn" aria-label="Toggle theme" title="Theme">◐</button>
+      <button class="icon-btn" id="settingsBtn" aria-label="Open settings" title="Settings">⚙</button>
+    </div>
+  </header>
+
+  <aside class="side" id="side" aria-label="Navigation">
+    <div class="side-head">
+      <div class="side-title">Sections</div>
+      <button class="icon-btn close" id="closeSide" aria-label="Close menu" title="Close">✕</button>
+    </div>
+
+    <nav class="nav" id="nav">
+      <!-- filled by JS -->
+    </nav>
+
+    <div class="side-foot">
+      <div class="mini">
+        <div class="mini-title">Next wipe</div>
+        <div class="mini-value" id="nextWipeLine">—</div>
+        <button class="btn small" id="recalcBtn">Recalculate</button>
+      </div>
+      <div class="mini">
+        <div class="mini-title">Saved</div>
+        <div class="mini-value" id="savedCount">0 topics</div>
+        <button class="btn small" id="gotoSaved">Open</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main" id="main" tabindex="-1">
+    <section class="hero" id="hero">
+      <div class="hero-card">
+        <div class="hero-top">
+          <div class="badge">Wipe-ready</div>
+          <div class="countdown" id="countdown">—</div>
+        </div>
+        <h1>Everything in one place.</h1>
+        <p class="muted">Building, bases (solo/duo/clan), electricity (every item), farming & teas, industrial automation, monuments, PvP, and curated videos.</p>
+
+        <div class="hero-actions">
+          <button class="btn primary" data-goto="wipe">Wipe Plan</button>
+          <button class="btn" data-goto="bases">Bases</button>
+          <button class="btn" data-goto="electricity">Electricity</button>
+          <button class="btn" data-goto="farming">Farming</button>
+        </div>
+
+        <div class="hero-grid">
+          <div class="stat">
+            <div class="stat-k">Search</div>
+            <div class="stat-v">Ctrl/⌘K</div>
+          </div>
+          <div class="stat">
+            <div class="stat-k">Bookmark</div>
+            <div class="stat-v">★</div>
+          </div>
+          <div class="stat">
+            <div class="stat-k">Progress</div>
+            <div class="stat-v">Saved</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sectionHost" aria-live="polite">
+      <!-- content rendered by JS -->
+    </section>
+  </main>
+
+  <!-- Bottom nav for mobile -->
+  <nav class="bottom" id="bottomNav" aria-label="Bottom navigation">
+    <!-- filled by JS -->
+  </nav>
+
+  <!-- Command palette -->
+  <div class="overlay" id="overlay" hidden></div>
+  <div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="palette-top">
+      <input id="paletteInput" type="search" placeholder="Search: turret circuit, 2x2 bunker, teas, conveyors..." aria-label="Search topics" autocomplete="off" />
+      <button class="icon-btn" id="paletteClose" aria-label="Close search">✕</button>
+    </div>
+    <div class="palette-hint">
+      <span>Enter: open</span><span>↑↓: navigate</span><span>Esc: close</span>
+    </div>
+    <div class="palette-results" id="paletteResults"></div>
+  </div>
+
+  <!-- Settings sheet -->
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Settings">
+    <div class="sheet-head">
+      <div class="sheet-title">Settings</div>
+      <button class="icon-btn" id="sheetClose" aria-label="Close settings">✕</button>
+    </div>
+
+    <div class="sheet-body">
+      <div class="group">
+        <div class="group-title">Wipe timezone</div>
+        <div class="group-sub">Wipe is last Friday of the month at 5:00 PM in this timezone.</div>
+        <select id="tzSelect" class="select" aria-label="Timezone">
+          <option value="America/Chicago">US Central (Chicago) — default</option>
+          <option value="America/New_York">US Eastern (New York)</option>
+          <option value="America/Denver">US Mountain (Denver)</option>
+          <option value="America/Los_Angeles">US Pacific (Los Angeles)</option>
+        </select>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Mode</div>
+        <label class="toggle">
+          <input type="checkbox" id="toggleBeginner" />
+          <span class="toggle-ui" aria-hidden="true"></span>
+          <span>Beginner mode (hide advanced)</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="toggleNoAnim" />
+          <span class="toggle-ui" aria-hidden="true"></span>
+          <span>Disable animations</span>
+        </label>
+        <label class="toggle">
+          <input type="checkbox" id="toggleCompact" />
+          <span class="toggle-ui" aria-hidden="true"></span>
+          <span>Compact mode</span>
+        </label>
+      </div>
+
+      <div class="group">
+        <div class="group-title">Notes</div>
+        <ul class="ul">
+          <li>This site is static. No accounts. Everything saves locally on your device.</li>
+          <li>Dates are formatted in English (en-US) to avoid French/locale surprises.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
